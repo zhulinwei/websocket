@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./socket.io.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <h1>websocket demo4</h1>
+  <input type="text" id="txt"></input>
+  <button id="btn">发送</button>
+  <div id="desc"></div>
+
+  <script type="text/javascript">
+    const socket = io('ws://localhost:3000/');
+    document.getElementById('btn').onclick = function() {
+      let txt = document.getElementById('txt').value;
+      if (txt) {
+        socket.emit('message', txt);
+        document.getElementById('txt').value = '';
+      }
+    }
+    socket.on('enter', data => {
+      addMessage(data);
+    });
+    socket.on('message', data => {
+      addMessage(data);
+    });
+    socket.on('leave', data => {
+      addMessage(data);
+    });
+    function addMessage(value) {
+      let div = document.createElement('div');
+      div.innerHTML = value;
+      document.body.appendChild(div);
+    }
+  </script>
+</body>
+</html>
